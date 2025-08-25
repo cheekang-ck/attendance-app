@@ -20,7 +20,6 @@ echo "Detected IP: " . htmlspecialchars($client_ip) . "<br>";
 $allowed_ip_pattern = "/^211\.25\.195\./";  // Matches 211.25.195.*
 
 if (preg_match($allowed_ip_pattern, $client_ip)) {
-    echo "✅ Allowed: You are in the school network.<br>";
     
     // Embed your Microsoft Form here (replace FORM_LINK)
     header("Location: https://forms.office.com/r/QwiADPVya9");
