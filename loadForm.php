@@ -23,7 +23,8 @@ if (preg_match($allowed_ip_pattern, $client_ip)) {
     echo "✅ Allowed: You are in the school network.<br>";
     
     // Embed your Microsoft Form here (replace FORM_LINK)
-    echo '<iframe src="https://forms.office.com/r/QwiADPVya9" width="100%" height="600px"></iframe>';
+    header("Location: https://forms.office.com/r/QwiADPVya9");
+    exit;
 
 } else {
     echo "❌ Access denied: You must be in school to clock in.";
