@@ -1,20 +1,31 @@
 <?php
-// Check GPS step
-if (!isset($_GET['gpsok'])) {
-    die("❌ You must verify GPS first.");
+// Function to safely get the real client IP
+function getClientIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // Can contain multiple IPs (comma-separated) → take the first one
+        return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
+    }
 }
 
-// Wi-Fi / IP check
-$user_ip = $_SERVER['REMOTE_ADDR'];
+$client_ip = getClientIP();
 
-// 🎯 Change this to your school’s Wi-Fi IP range
-$allowed_ip_pattern = "/^211\.25\.195\./"; 
+// For debugging - see what IP PHP detects
+echo "Detected IP: " . htmlspecialchars($client_ip) . "<br>";
 
-if (!preg_match($allowed_ip_pattern, $user_ip)) {
-    die("❌ You must be on school Wi-Fi. Your IP: $user_ip");
+// Define allowed IP range (your school’s subnet)
+$allowed_ip_pattern = "/^211\.25\.195\./";  // Matches 211.25.195.*
+
+if (preg_match($allowed_ip_pattern, $client_ip)) {
+    echo "✅ Allowed: You are in the school network.<br>";
+    
+    // Embed your Microsoft Form here (replace FORM_LINK)
+    echo '<iframe src="https://forms.office.com/r/QwiADPVya9" width="100%" height="600px"></iframe>';
+
+} else {
+    echo "❌ Access denied: You must be in school to clock in.";
 }
-
-// ✅ Redirect to Microsoft Form
-header("https://forms.office.com/r/QwiADPVya9"); 
-exit();
 ?>
