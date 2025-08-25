@@ -13,7 +13,7 @@ function getClientIP() {
 }
 
 $client_ip = getClientIP();
-$allowed_ip_pattern = "/^211\.25\.195\./";  // ✅ Your school subnet
+$allowed_ip_pattern = "/^(211\.25\.195\.|218\.208\.8\.)/";  // ✅ Your school subnet
 
 if (!preg_match($allowed_ip_pattern, $client_ip)) {
     header("Content-Type: text/html; charset=UTF-8");
@@ -23,18 +23,27 @@ if (!preg_match($allowed_ip_pattern, $client_ip)) {
 }
 
 // -------------------
-// 2. Proxy Microsoft Form
+// 2. Attendance Form
 // -------------------
-$form_url = "https://forms.office.com/r/5apKxvaVMi";
-
-// Initialize cURL
-$ch = curl_init($form_url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-$response = curl_exec($ch);
-curl_close($ch);
-
-// Output the form HTML directly
-header("Content-Type: text/html; charset=UTF-8");
-echo $response;
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance Form</title>
+</head>
+<body>
+  <h2>✅ Student Attendance Form</h2>
+  <p>Welcome! Your IP <b><?php echo htmlspecialchars($client_ip); ?></b> is verified.</p>
+
+  <form action="submitAttendance.php" method="post">
+    <label for="name">Student Name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="task">Task / Work Description:</label><br>
+    <textarea id="task" name="task" required></textarea><br><br>
+
+    <button type="submit">Check In</button>
+  </form>
+</body>
+</html>
