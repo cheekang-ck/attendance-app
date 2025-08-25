@@ -13,9 +13,6 @@ function getClientIP() {
 
 $client_ip = getClientIP();
 
-// For debugging - see what IP PHP detects
-echo "Detected IP: " . htmlspecialchars($client_ip) . "<br>";
-
 // Define allowed IP range (your school’s subnet)
 $allowed_ip_pattern = "/^211\.25\.195\./";  // Matches 211.25.195.*
 
