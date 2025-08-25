@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance Verification</title>
+  <script>
+    function verifyLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+      } else {
+        alert("❌ GPS not supported.");
+      }
+    }
+
+    function success(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+       // 🎯 Replace with your classroom coordinates
+      const schoolLat = 2.8324327083435725;  
+      const schoolLon = 101.70653606993983;  
+      const allowedRadius = 0.01; // km
+
+      const dist = distance(lat, lon, schoolLat, schoolLon);
+
+      if (dist <= allowedRadius) {
+        // ✅ GPS ok → go to loadForm.php
+        window.location.href = "loadForm.php?gpsok=1";
+      } else {
+        alert("❌ You are not in the classroom area.");
+      }
+    }
+
+    function error(err) {
+      alert("❌ GPS error: " + err.message);
+    }
+
+    function distance(lat1, lon1, lat2, lon2) {
+      function toRad(x) { return x * Math.PI / 180; }
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+  </script>
+</head>
+<body onload="verifyLocation()">
+  <h2>Checking location…</h2>
+</body>
+</html>
